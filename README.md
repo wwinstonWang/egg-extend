@@ -18,15 +18,3 @@ require('babel-register')({
 1、eggjs路由初始化
     const routerDecorator=require("./core/router_decorator");
     routerDecorator.initRouter(app);
-   
-2、负载均衡装饰器初始化
-    const {client}=require("./core/feign");
-    client.ready();
-    const directory = path.join(app.config.baseDir, 'app/feign');
-    app.loader.loadToApp(directory, 'feign',{
-        initializer(model, opt) {
-        // 第一个参数为 export 的对象
-        // 第二个参数为一个对象，只包含当前文件的路径
-        return new model(app, opt.path);
-        },
-    });

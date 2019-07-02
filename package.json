@@ -4,5 +4,8 @@
   "description": "egg extend",
   "main": "base_controller.js",
   "author": "winston",
-  "license": "MIT"
+  "license": "MIT",
+  "eggPlugin":{
+    "name":"egg-extend"
+  }
 }

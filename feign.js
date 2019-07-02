@@ -1,11 +1,5 @@
-const bootstrap = require("../../config/bootstrap");
 const NacosNamingClient = require('nacos').NacosNamingClient;
-const logger = console;
-const client = new NacosNamingClient({
-    logger,
-    serverList: bootstrap.discovery.serverAddr,
-    namespace: bootstrap.discovery.namespace,
-});
+let client = undefined
 
 /**
  * 根据负载均衡策略从服务列表中获取服务连接信息
@@ -63,6 +57,11 @@ function feign(serviceName) {
 
 module.exports = {
     bootstrap,
-    client,
-    feign
+    feign,
+    get client(){
+        return client;
+    },
+    set client(value){
+        client=value;
+    }
 }
