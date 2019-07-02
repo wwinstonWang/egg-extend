@@ -5,7 +5,10 @@
   "main": "base_controller.js",
   "author": "winston",
   "license": "MIT",
-  "eggPlugin":{
-    "name":"egg-extend"
+  "eggPlugin": {
+    "name": "egg-extend"
+  },
+  "dependencies": {
+    "lodash": "^4.17.11"
   }
 }

@@ -3,6 +3,7 @@ const path=require("path");
 const ip=require("./nettools").getIPAdress();
 const feign= require("./feign");
 const NacosNamingClient = require('nacos').NacosNamingClient;
+const _=require("lodash");
 
 class ApptHook {
     constructor(app) {
@@ -32,7 +33,7 @@ class ApptHook {
             }
         }
         let config = app.config.eggExtend;
-        config = Object.assign({}, defaultConfig, config)
+        config=_.merge({},defaultConfig,config);
         app.config.eggExtend=config;
 
         const logger = console;

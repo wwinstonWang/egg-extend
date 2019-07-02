@@ -3,6 +3,7 @@ const path=require("path");
 const ip=require("./nettools").getIPAdress();
 const feign= require("./feign");
 const NacosNamingClient = require('nacos').NacosNamingClient;
+const _=require("lodash");
 
 class AgentHook {
     constructor(agent) {
@@ -33,7 +34,7 @@ class AgentHook {
             }
         }
         let config = agent.config.eggExtend;
-        config = Object.assign({}, defaultConfig, config)
+        config=_.merge({},defaultConfig,config);
         agent.config.eggExtend=config;
     
         const logger = console;
