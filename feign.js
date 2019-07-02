@@ -56,7 +56,6 @@ function feign(serviceName) {
 }
 
 module.exports = {
-    bootstrap,
     feign,
     get client(){
         return client;

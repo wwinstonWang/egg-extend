@@ -35,7 +35,7 @@ module.exports = async app => {
 
     const feign = require("./feign");
     feign.client = client;
-    client.ready();
+    await client.ready();
 
     const directory = path.join(app.config.baseDir, 'app/feign');
     app.loader.loadToApp(directory, 'feign', {

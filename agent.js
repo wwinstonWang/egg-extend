@@ -1,6 +1,7 @@
 'use strict';
 const path=require("path");
 const ip=require("./nettools").getIPAdress();
+const feign= require("./feign");
 
 module.exports = async agent => {
     const defaultConfig = {
@@ -32,10 +33,8 @@ module.exports = async agent => {
         serverList: config.discovery.serverAddr,
         namespace: config.discovery.namespace,
     });
-
-    const feign= require("./feign");
     feign.client=client;
-    client.ready();
+    await client.ready();
 
     const directory = path.join(app.config.baseDir, 'app/feign');
     agent.loader.loadToApp(directory, 'feign', {
