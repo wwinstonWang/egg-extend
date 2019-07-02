@@ -16,5 +16,5 @@ require('babel-register')({
 });
 
 1、eggjs路由初始化
-    const routerDecorator=require("./core/router_decorator");
+    const routerDecorator=require("egg-extend/router_decorator");
     routerDecorator.initRouter(app);
