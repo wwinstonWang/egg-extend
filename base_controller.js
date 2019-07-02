@@ -1,7 +1,7 @@
 'use strict';
 
 const Controller = require('egg').Controller;
-const ServiceInvoker=require("../core/service_invoker");
+const ServiceInvoker=require("./service_invoker");
 
  class BaseController extends Controller {
     constructor(...args){
