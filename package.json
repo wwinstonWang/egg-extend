@@ -6,7 +6,7 @@
   "author": "winston",
   "license": "MIT",
   "eggPlugin": {
-    "name": "egg-extend"
+    "name": "eggExtend"
   },
   "dependencies": {
     "lodash": "^4.17.11"
