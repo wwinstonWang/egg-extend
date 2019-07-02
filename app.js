@@ -59,8 +59,8 @@ class ApptHook {
     async beforeClose(){
         const feign=require("egg-extend/feign");
         const client=feign.client;
-        const bootstrap=this.app.config.eggExtend;
-        await client.deregisterInstance(bootstrap.name,bootstrap.local);
+        const config=this.app.config.eggExtend;
+        await client.deregisterInstance(config.name,config.local);
     }
 }
 
