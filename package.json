@@ -1,0 +1,8 @@
+{
+  "name": "egg-extend",
+  "version": "1.0.0",
+  "description": "egg extend",
+  "main": "base_controller.js",
+  "author": "winston",
+  "license": "MIT"
+}
