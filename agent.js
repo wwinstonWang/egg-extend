@@ -48,14 +48,14 @@ class AgentHook {
         // registry instance
         await client.registerInstance(config.name, config.local);
     
-        const directory = path.join(agent.config.baseDir, 'app/feign');
-        agent.loader.loadToApp(directory, 'feign', {
-            initializer(model, opt) {
-                // 第一个参数为 export 的对象
-                // 第二个参数为一个对象，只包含当前文件的路径
-                return new model(agent, opt.path);
-            },
-        });
+        // const directory = path.join(agent.config.baseDir, 'app/feign');
+        // agent.loader.loadToApp(directory, 'feign', {
+        //     initializer(model, opt) {
+        //         // 第一个参数为 export 的对象
+        //         // 第二个参数为一个对象，只包含当前文件的路径
+        //         return new model(agent, opt.path);
+        //     },
+        // });
     }
 
     async beforeClose(){

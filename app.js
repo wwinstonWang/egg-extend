@@ -43,16 +43,16 @@ class ApptHook {
             namespace: config.discovery.namespace,
         });
         feign.client=client;
-        await client.ready();
+        client.ready();
         // registry instance
-        await client.registerInstance(config.name, config.local);
+        // await client.registerInstance(config.name, config.local);
     
         const directory = path.join(app.config.baseDir, 'app/feign');
         app.loader.loadToApp(directory, 'feign', {
             initializer(model, opt) {
                 // 第一个参数为 export 的对象
                 // 第二个参数为一个对象，只包含当前文件的路径
-                return new model(app, opt.path);
+                return new model(app);
             },
         });
     }
@@ -61,7 +61,7 @@ class ApptHook {
         const feign=require("egg-extend/feign");
         const client=feign.client;
         const config=this.app.config.eggExtend;
-        await client.deregisterInstance(config.name,config.local);
+        // await client.deregisterInstance(config.name,config.local);
         await client.close();
     }
 }
