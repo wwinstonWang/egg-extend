@@ -62,6 +62,7 @@ class ApptHook {
         const client=feign.client;
         const config=this.app.config.eggExtend;
         await client.deregisterInstance(config.name,config.local);
+        await client.close();
     }
 }
 
