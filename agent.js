@@ -63,6 +63,7 @@ class AgentHook {
         const client=feign.client;
         const config=this.agent.config.eggExtend;
         await client.deregisterInstance(config.name,config.local);
+        await client.close();
     }
 }
 
