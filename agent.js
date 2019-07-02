@@ -2,6 +2,7 @@
 const path=require("path");
 const ip=require("./nettools").getIPAdress();
 const feign= require("./feign");
+const NacosNamingClient = require('nacos').NacosNamingClient;
 
 module.exports = async agent => {
     const defaultConfig = {

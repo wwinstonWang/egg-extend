@@ -1,6 +1,7 @@
 'use strict';
 const path = require("path");
 const ip=require("./nettools").getIPAdress();
+const NacosNamingClient = require('nacos').NacosNamingClient;
 
 module.exports = async app => {
     const defaultConfig = {

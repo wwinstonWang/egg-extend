@@ -1,4 +1,3 @@
-const NacosNamingClient = require('nacos').NacosNamingClient;
 let client = undefined
 
 /**
