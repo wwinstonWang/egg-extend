@@ -1,17 +1,17 @@
 'use strict';
-const path=require("path");
-const ip=require("./nettools").getIPAdress();
-const feign= require("./feign");
+const path = require("path");
+const ip = require("./nettools").getIPAdress();
+const feign = require("./feign");
 const NacosNamingClient = require('nacos').NacosNamingClient;
-const _=require("lodash");
+const _ = require("lodash");
 
 class ApptHook {
     constructor(app) {
         this.app = app;
     }
 
-    async didReady() {
-        const app=this.app;
+    async didLoad() {
+        const app = this.app;
         const defaultConfig = {
             /**
              * 微服务名称
@@ -33,20 +33,21 @@ class ApptHook {
             }
         }
         let config = app.config.eggExtend;
-        config=_.merge({},defaultConfig,config);
-        app.config.eggExtend=config;
+        config = _.merge({}, defaultConfig, config);
+        app.config.eggExtend = config;
 
-        const logger = console;
-        const client = new NacosNamingClient({
-            logger,
-            serverList: config.discovery.serverAddr,
-            namespace: config.discovery.namespace,
-        });
-        feign.client=client;
-        client.ready();
-        // registry instance
-        // await client.registerInstance(config.name, config.local);
-    
+        (()=>{
+            const logger = console;
+            const client = new NacosNamingClient({
+                logger,
+                serverList: config.discovery.serverAddr,
+                namespace: config.discovery.namespace,
+            });
+            this.client = client;
+            feign.client = client;
+            client.ready();
+        })();
+
         const directory = path.join(app.config.baseDir, 'app/feign');
         app.loader.loadToApp(directory, 'feign', {
             initializer(model, opt) {
@@ -57,13 +58,9 @@ class ApptHook {
         });
     }
 
-    async beforeClose(){
-        const feign=require("egg-extend/feign");
-        const client=feign.client;
-        const config=this.app.config.eggExtend;
-        // await client.deregisterInstance(config.name,config.local);
-        await client.close();
+    async beforeClose() {
+        await this.client.close();
     }
 }
 
-module.exports=ApptHook;
+module.exports = ApptHook;

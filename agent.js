@@ -1,17 +1,16 @@
 'use strict';
-const path=require("path");
-const ip=require("./nettools").getIPAdress();
-const feign= require("./feign");
+const path = require("path");
+const ip = require("./nettools").getIPAdress();
 const NacosNamingClient = require('nacos').NacosNamingClient;
-const _=require("lodash");
+const _ = require("lodash");
 
 class AgentHook {
     constructor(agent) {
         this.agent = agent;
     }
 
-    async didReady() {
-        const agent=this.agent;
+    async didLoad() {
+        const agent = this.agent;
 
         const defaultConfig = {
             /**
@@ -34,37 +33,29 @@ class AgentHook {
             }
         }
         let config = agent.config.eggExtend;
-        config=_.merge({},defaultConfig,config);
-        agent.config.eggExtend=config;
-    
-        const logger = console;
-        const client = new NacosNamingClient({
-            logger,
-            serverList: config.discovery.serverAddr,
-            namespace: config.discovery.namespace,
-        });
-        feign.client=client;
-        await client.ready();
-        // registry instance
-        await client.registerInstance(config.name, config.local);
-    
-        // const directory = path.join(agent.config.baseDir, 'app/feign');
-        // agent.loader.loadToApp(directory, 'feign', {
-        //     initializer(model, opt) {
-        //         // 第一个参数为 export 的对象
-        //         // 第二个参数为一个对象，只包含当前文件的路径
-        //         return new model(agent, opt.path);
-        //     },
-        // });
+        config = _.merge({}, defaultConfig, config);
+        agent.config.eggExtend = config;
+
+        await (async () => {
+            const logger = console;
+            const client = new NacosNamingClient({
+                logger,
+                serverList: config.discovery.serverAddr,
+                namespace: config.discovery.namespace,
+            });
+            this.client = client;
+            await client.ready();
+            // registry instance
+            await client.registerInstance(config.name, config.local);
+        })();
+
     }
 
-    async beforeClose(){
-        const feign=require("egg-extend/feign");
-        const client=feign.client;
-        const config=this.agent.config.eggExtend;
-        await client.deregisterInstance(config.name,config.local);
-        await client.close();
+    async beforeClose() {
+        const config = this.agent.config.eggExtend;
+        await this.client.deregisterInstance(config.name, config.local);
+        await this.client.close();
     }
 }
 
-module.exports=AgentHook;
+module.exports = AgentHook;

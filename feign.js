@@ -1,5 +1,3 @@
-let client = undefined
-
 /**
  * 根据负载均衡策略从服务列表中获取服务连接信息
  * @param {注册中心服务列表} serviceList 
@@ -54,11 +52,12 @@ function feign(serviceName) {
     };
 }
 
+let client;
 module.exports = {
     feign,
-    get client(){
-        return client;
-    },
+    /**
+     * 设置nacos订阅
+     */
     set client(value){
         client=value;
     }
