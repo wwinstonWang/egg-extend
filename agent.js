@@ -46,14 +46,16 @@ class AgentHook {
             this.client = client;
             await client.ready();
             // registry instance
-            await client.registerInstance(config.name, config.local);
+            if(config.name.length!=0)
+                await client.registerInstance(config.name, config.local);
         })();
 
     }
 
     async beforeClose() {
         const config = this.agent.config.eggExtend;
-        await this.client.deregisterInstance(config.name, config.local);
+        if(config.name.length!=0)
+            await this.client.deregisterInstance(config.name, config.local);
         await this.client.close();
     }
 }
