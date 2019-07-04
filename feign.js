@@ -18,7 +18,7 @@ function balanceServiceList(serviceList){
 }
 
 /**
- * 装饰器，类似java中Feign
+ * 装饰器，类似java中Feign. 被Feign修饰的类中，所有函数第一个参数必须为对象，并且在运行时会自动注入负载均衡地址，键为balanceUrl
  * @param {注册中心微服务名称} serviceName 
  */
 function feign(serviceName) {
@@ -42,7 +42,9 @@ function feign(serviceName) {
                     value(...args) {
                         const baseUrl=balanceServiceList(serviceList);
                         console.log(`当前地址为${baseUrl}`);
-                        args.unshift(baseUrl);
+                        if(args.length>0)
+                            args[0].balanceUrl=baseUrl;
+                        // args.unshift(baseUrl);
                         const ret = func.apply(this,args);
                         return ret;
                     }
