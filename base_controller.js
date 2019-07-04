@@ -81,6 +81,7 @@ const ServiceInvoker=require("./service_invoker");
             this.success(data);
         }
         
+        return this.ctx.body;
     };
 
     getShowParms(){
@@ -101,6 +102,8 @@ const ServiceInvoker=require("./service_invoker");
         if(data.length==1)
             data=data[0];
         this.success(data);
+
+        return this.ctx.body;
     };
 
     /**
@@ -115,6 +118,8 @@ const ServiceInvoker=require("./service_invoker");
             data = await this.model.create(ctx.request.body);
 
         this.success(data);
+
+        return this.ctx.body;
     };
 
     /**
@@ -130,6 +135,8 @@ const ServiceInvoker=require("./service_invoker");
 
         const data=await this.model.update(ctx.request.body,{where});
         this.success(data);
+
+        return this.ctx.body;
     };
 
     /**
@@ -144,7 +151,9 @@ const ServiceInvoker=require("./service_invoker");
 
         const data=await this.model.destroy({where});
 
-        this.success(data);;
+        this.success(data);
+
+        return this.ctx.body;
     };
 }
 
