@@ -17,11 +17,31 @@ function balanceServiceList(serviceList) {
     return `http://${currentService.ip}:${currentService.port}`
 }
 
+let client;
 /**
- * 装饰器，类似java中Feign. 被Feign修饰的类中. 当函数第一个参数为对象时，运行时会自动注入负载均衡地址，键为balanceUrl
+ * 负载均衡对象
+ */
+const balance={
+    __resource__:{},
+    /**
+     * 注册中心客户端
+     */
+    get client(){
+        return client;
+    },
+    set client(value){
+        client=value;
+    }
+}
+
+module.exports =balance;
+
+
+/**
+ * 负载均衡类装饰器，类似java中Feign. 被Feign修饰的类中. 当函数第一个参数为对象时，运行时会自动注入负载均衡地址，键为balanceUrl
  * @param {注册中心微服务名称} serviceName 
  */
-function feign(serviceName) {
+balance.feign=function(serviceName){
     let serviceList = undefined;
     client.subscribe(serviceName, hosts => {
         serviceList = hosts;
@@ -32,7 +52,6 @@ function feign(serviceName) {
             if (key === 'constructor') {
                 continue;
             }
-            // 获取属性, 
             //这里需要注意, 在es6中, 类的属性不一定是一个字符串常量, 
             const func = desc[key].value;
             // 只关心类的方法
@@ -40,11 +59,14 @@ function feign(serviceName) {
                 // 重新定义类的原方法, 
                 Object.defineProperty(target.prototype, key, {
                     value(...args) {
-                        const baseUrl = balanceServiceList(serviceList);
-                        console.log(`当前地址为${baseUrl}`);
-                        if (args.length > 0 && typeof args[0] == "object")
+                        if (args.length > 0 && typeof args[0] == "object"){
+                            let baseUrl = balanceServiceList(serviceList);
+                            let resource=balance.__resource__[target.name];
+                            if(resource && resource[key])
+                                baseUrl+=resource[key];
+                            console.log(`当前地址为${baseUrl}`);
                             args[0].balanceUrl = baseUrl;
-                        // args.unshift(baseUrl);
+                        }
                         const ret = func.apply(this, args);
                         return ret;
                     }
@@ -54,13 +76,14 @@ function feign(serviceName) {
     };
 }
 
-let client;
-module.exports = {
-    feign,
-    /**
-     * 设置nacos订阅
-     */
-    set client(value) {
-        client = value;
+/**
+ * Feign中方法装饰器
+ * @param {资源名称} resource 
+ */
+balance.feign.resource=function(resource){
+    return function (target, name, descriptor) {
+        //将对象方法名作为资源名称存储
+        balance.__resource__[target.constructor.name] || (balance.__resource__[target.constructor.name]={})
+        balance.__resource__[target.constructor.name][name]=resource;
     }
 }
