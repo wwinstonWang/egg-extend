@@ -1,17 +1,14 @@
 'use strict';
 const loader = require("./lib/loader");
 
-class ApptHook {
-    constructor(app) {
-        this.app = app;
-    }
+module.exports=app=>{
+    // 在中间件最前面统计请求时间
+    app.config.coreMiddleware.unshift("errorHandler");
+    app.config.coreMiddleware.unshift("koaBody");
 
-    async didLoad() {
-        const app = this.app;
-        let isRegisterInstance = false;
-        if (app.config.eggExtend.app)
-            loader(app, isRegisterInstance);
-    }
-}
+    console.log("core middleware "+JSON.stringify(app.config.coreMiddleware));
 
-module.exports = ApptHook;
+    let isRegisterInstance = false;
+    if (app.config.eggExtend.app)
+        loader(app, isRegisterInstance);
+};
