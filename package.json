@@ -9,6 +9,7 @@
     "name": "eggExtend"
   },
   "dependencies": {
-    "koa-body": "^4.1.0"
+    "koa-body": "^4.1.0",
+    "nacos": "^1.0.0"
   }
 }
