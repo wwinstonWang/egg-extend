@@ -44,7 +44,7 @@ module.exports =balance;
 balance.feign=function(serviceName){
     let serviceList = undefined;
     client.subscribe(serviceName, hosts => {
-        serviceList = hosts;
+        serviceList = hosts.filter(host=>host.enabled);
     });
     return function (target) {
         const desc = Object.getOwnPropertyDescriptors(target.prototype);
