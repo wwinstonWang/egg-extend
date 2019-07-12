@@ -42,7 +42,7 @@ module.exports =balance;
  * @param {注册中心微服务名称} serviceName 
  */
 balance.feign=function(serviceName){
-    let serviceList = undefined;
+    let serviceList = [];
     client.subscribe(serviceName, hosts => {
         serviceList = hosts.filter(host=>host.enabled);
     });
@@ -60,6 +60,8 @@ balance.feign=function(serviceName){
                 Object.defineProperty(target.prototype, key, {
                     value(...args) {
                         if (args.length > 0 && typeof args[0] == "object"){
+                            if(serviceList.length==0)
+                                throw new Error(`${serviceName}找不到可用得服务.`);
                             let baseUrl = balanceServiceList(serviceList);
                             let resource=balance.__resource__[target.name];
                             if(resource && resource[key])
