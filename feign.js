@@ -61,7 +61,7 @@ balance.feign=function(serviceName){
                     value(...args) {
                         if (args.length > 0 && typeof args[0] == "object"){
                             if(serviceList.length==0)
-                                throw new Error(`${serviceName}找不到可用得服务.`);
+                                throw new Error(`Service of ${serviceName} was not found.`);
                             let baseUrl = balanceServiceList(serviceList);
                             let resource=balance.__resource__[target.name];
                             if(resource && resource[key])
