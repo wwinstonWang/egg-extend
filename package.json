@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "koa-body": "^4.1.0",
-    "nacos": "^1.0.0"
+    "nacos": "^2.0.0"
   }
 }
