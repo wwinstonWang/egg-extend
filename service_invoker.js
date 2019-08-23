@@ -4,6 +4,8 @@ function toInt(str) {
     return parseInt(str, 10) || 0;
   }
 
+const rule=require("./query_wrapper");
+
 class ServiceInvoker{
     /**
      * 
@@ -31,11 +33,7 @@ class ServiceInvoker{
         //过滤属性
         let attributes=fields && fields.split(",");
         
-        let where={};
-        for(let property in this.model.rawAttributes){
-            if(query[property])
-                where[property]=query[property];
-        }
+        let where=rule(query,this.model);
         return {limit,offset,attributes,where,order};
     }
 }
