@@ -24,19 +24,17 @@
 
 一般参数在数据实体中为等于查找条件。为实现复杂查找条件，框架规定以指定前缀开头的属性名作为业务拓展。
 
-​					`const IN_PREFIX = 'in'`
+```
+const IN_PREFIX = 'in'
+const GT_PREFIX = 'gt'			
+const GE_PREFIX = 'ge'
+const LT_PREFIX = 'lt'
+const LE_PREFIX = 'le'
+const NEQ_PREFIX = 'neq'
+const NIN_PREFIX = 'nin'
+```
 
-​					`const GT_PREFIX = 'gt'`
-​					
-​					`const GE_PREFIX = 'ge'`
-
-​					`const LT_PREFIX = 'lt'`
-
-​					`const LE_PREFIX = 'le'`
-
-​					`const NEQ_PREFIX = 'neq'`
-
-​					`const NIN_PREFIX = 'nin'`
+`
 
 ​     **增: POST请求**: 
 
