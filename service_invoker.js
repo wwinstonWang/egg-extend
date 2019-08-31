@@ -4,7 +4,7 @@ function toInt(str) {
     return parseInt(str, 10) || 0;
   }
 
-const rule=require("./query_wrapper");
+const rule=require("./query_wrapper").rule;
 
 class ServiceInvoker{
     /**
